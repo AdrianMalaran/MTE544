@@ -1,0 +1,7 @@
+<!--@file arm_control.launch -->
+<launch>
+  <!-- <rosparam file="$(find roboperation)/config/circuit_race.yaml"/> -->
+
+  <node pkg="mapping" name="mapping" type="mapping" output="screen">
+  </node>
+</launch>
