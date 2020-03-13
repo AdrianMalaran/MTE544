@@ -9,6 +9,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <sensor_msgs/LaserScan.h>
 #include <tf/transform_broadcaster.h>
+#include <nav_msgs/Odometry.h>
 
 #include "ros/ros.h"
 
@@ -38,15 +39,21 @@ private:
   ros::Subscriber scan_sub_;
   ros::Subscriber position_sub_;
   ros::Publisher map_pub_;
+  ros::Subscriber odom_pose_sub_;
+
+  int iteration_ = 0;
 
   double max_x = 14.1;
   double max_y = 7.91;
-
   double min_x = -9.15;
   double min_y = -11.56;
 
-  double x_offset = 9.15;
-  double y_offset = 11.56;
+  double x_offset_;
+  double y_offset_;
+
+  double free_constant_ = 0.97;
+  double unknown_constant_ = 0.98;
+  double occupied_constant_ = 0.99;
 
   bool position_set_ = false;
   geometry_msgs::Pose pose_;
@@ -66,6 +73,9 @@ public:
   void IndoorPositionCallback(const geometry_msgs::PoseWithCovarianceStamped& msg);
   std::vector<Coordinate> findAllPointsAlongLine(int x1, int y1, int x2, int y2);
   void PublishMap();
+  double log_odds(double prob);
+  void convertToOccupancyFrame(double world_x, double world_y, int& occ_x, int& occ_y);
+  void OdomPositionCallback(const nav_msgs::Odometry& msg);
 };
 
 #endif

@@ -2,6 +2,8 @@
 <launch>
   <!-- <rosparam file="$(find roboperation)/config/circuit_race.yaml"/> -->
 
-  <node pkg="mapping" name="mapping" type="mapping" output="screen">
-  </node>
+  <node pkg="tf" type="static_transform_publisher" name="world_to_map"
+            args="0 0  0  0 0 0  /camera_depth_frame /map 100" />
+  <node pkg="mapping" name="mapping" type="mapping" output="screen"/>
+
 </launch>
