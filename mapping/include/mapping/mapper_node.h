@@ -21,8 +21,13 @@ enum State {
 };
 
 struct Cell {
-  double log_odds = 0.5;
+  double log_odds = 0;
   State state = UNKNOWN;
+};
+
+struct Coordinate {
+    int x;
+    int y;
 };
 
 class Mapping {
@@ -33,6 +38,15 @@ private:
   ros::Subscriber scan_sub_;
   ros::Subscriber position_sub_;
   ros::Publisher map_pub_;
+
+  double max_x = 14.1;
+  double max_y = 7.91;
+
+  double min_x = -9.15;
+  double min_y = -11.56;
+
+  double x_offset = 9.15;
+  double y_offset = 11.56;
 
   bool position_set_ = false;
   geometry_msgs::Pose pose_;
@@ -50,6 +64,8 @@ public:
   void PrintMap(vector<vector<Cell>> map);
   void ScanCallback(const sensor_msgs::LaserScan& msg);
   void IndoorPositionCallback(const geometry_msgs::PoseWithCovarianceStamped& msg);
+  std::vector<Coordinate> findAllPointsAlongLine(int x1, int y1, int x2, int y2);
+  void PublishMap();
 };
 
 #endif
