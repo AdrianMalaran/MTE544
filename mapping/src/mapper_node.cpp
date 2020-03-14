@@ -32,7 +32,6 @@ Mapping::Mapping() {
       temp_map[row][col].log_odds = log_odds(unknown_constant_);
     }
   }
-  // PrintMap(temp_map);
   map_ = temp_map;
 }
 
@@ -57,8 +56,8 @@ double Mapping::log_odds(double prob) {
 }
 
 void Mapping::convertToOccupancyFrame(double world_x, double world_y, int& occ_x, int& occ_y) {
-  occ_x = (world_x * 25 + x_offset_);
-  occ_y = (world_y * 25 + y_offset_);
+  occ_x = (world_x * 100 + x_offset_);
+  occ_y = (world_y * 100 + y_offset_);
 }
 
 
@@ -68,16 +67,16 @@ void Mapping::ScanCallback(const sensor_msgs::LaserScan& msg) {
     return;
   }
 
-  // iteration_ ++;
-  // if (iteration_ == 3) {
-  //   iteration_ = 0;
-  //   return;
-  // }
+  iteration_ ++;
+  if (iteration_ == 3) {
+    iteration_ = 0;
+    return;
+  }
   double increment = msg.angle_increment;
 
   for (int i = 0; i < msg.ranges.size(); i++) {
 
-    if (i % 4 != 0) {
+    if (i % 2 != 0) {
       continue;
     } else {
 
